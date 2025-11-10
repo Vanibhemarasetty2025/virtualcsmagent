@@ -1,0 +1,466 @@
+{
+  "name": "Team Gamma Hackathon Project",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4.1",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "b443b915-806a-435c-b29a-9ee2a989b957",
+      "name": "OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        288,
+        208
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "LniH1mAXbg3D5mzO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://mcp.appsflyer.com/auth/mcp",
+        "serverTransport": "httpStreamable",
+        "authentication": "bearerAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        208
+      ],
+      "id": "357e4fcc-4b75-4fe6-bd68-6a284c659fc7",
+      "name": "MCP Client",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "1rL6S4itxfEdPubn",
+          "name": "Bearer Auth MCP"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "0f1dcf74-86d5-4247-8619-29e13d863ea5",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a blue and green themed LAST {{ $json['Last days to analyze'] }} DAYS performance HTML dashboard for the app {{ $json['App name'] }} that includes the following:\n\nSections with emojis to enhance visual appeal:\n\nExecutive Summary, Key Performance, Signals Actionable Recommendations Tables with data for:\n\nClicks, installs, d1, d7, and d14 performance metrics (installs, revenue, ROI).\nAdd emojis throughout titles, sections, and tables for clarity and engagement.\n\nMake sure the dashboard uses a clean, readable style with blue and green color palette, subtle shadows, and rounded borders for sections and tables.",
+        "options": {
+          "systemMessage": "You are an AI agent with a single, specific role: create a cinematic video prompt for OpenAI Sora based on a weekly AppsFlyer performance summary.\n\nCRITICAL:\n- Output ONLY the final text prompt for Sora. Do not include any code blocks, markdown syntax, or explanations.\n- The video must feature a professional woman representing an AppsFlyer Customer Success Manager (CSM).\n- She should speak confidently on camera, presenting the weekly app marketing performance insights.\n- Her tone is clear, data-driven, and friendly — like a CSM summarizing results for a client.\n- The setting should be a modern office or virtual dashboard studio with subtle AppsFlyer branding (colors: blue #0D99FF, green #00C853).\n- The video should include animated overlays of charts, graphs, app screens, and campaign metrics as she speaks.\n- Duration: 10 seconds.\n- Style: polished, professional, engaging.\n- Narration tone: approachable yet expert.\n- Today’s date is available via the `get_supported_metadata` tool and can be referenced naturally in the dialogue.\n- Input data (weekly summary) is provided as JSON with keys such as:\n  - installs_change\n  - revenue_change\n  - retention_change\n  - top_campaign\n  - top_creative\n  - insight_summary\n  - next_step\n\nMANDATORY:\n- The Sora prompt must describe visuals, setting, and narration in cinematic detail.\n- End the video with the presenter smiling and saying:\n  “Thanks for watching your weekly AppsFlyer performance update — see you next week!”\n- Include the AppsFlyer logo animation and caption: “AppsFlyer Virtual CSM – Weekly Performance Recap.”\n\nExample output:\n\"A 15-second video featuring a professional woman in a sleek office with an AppsFlyer logo behind her. She stands next to animated charts showing installs up 12%, revenue up 8%, and retention steady at 32%. As she speaks, campaign visuals and app screens appear beside her. Background music is upbeat and corporate. End with her smiling and the AppsFlyer logo appearing with the text: 'AppsFlyer Virtual CSM – Weekly Recap for October 30, 2025.'\"\n\nOUTPUT ONLY THE FINAL PROMPT TEXT.\n\n\n",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -64
+      ],
+      "id": "faf314d8-a4a6-48e1-9661-4c2d41e1dda0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## Build app performance dashboard and send to email\n\n\n- Synced to Github [here](https://github.com/AppsFlyerKnowledge/appsflyer-ai-agents-examples/blob/main/n8n/executive_summary_agent_gmail.json)\n",
+        "height": 240,
+        "width": 336,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "5f93a2de-3752-4707-b2b9-bd3365cb1a14",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "41a1a555-0b26-409b-9304-7e0c5f1876d2",
+              "name": "destination emails",
+              "value": "=[\"liaz.kamper@appsflyer.com\"]",
+              "type": "array"
+            },
+            {
+              "id": "e7842673-86db-437e-9a45-b433328a2d02",
+              "name": "App name",
+              "value": "com.appsflyer.android.demo.app.gaming",
+              "type": "string"
+            },
+            {
+              "id": "f7d907a9-81e6-41e0-96dd-1dd820e24870",
+              "name": "Last days to analyze",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "5584f2b3-c1f6-4067-91a3-3b4c7fcda7c5",
+              "name": "just my name",
+              "value": "liaz ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        -64
+      ],
+      "id": "23060c1a-ebed-4d3d-aa3c-7cd12bb14199",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ Edit this node \n\n\n\n\n\n\n\n\n\n\n\nEdit here:\n- App ID (e.g. com.example.myapp \n- Dashboard range in days\n- email addresses list",
+        "height": 320,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "265f1aa9-6f3c-4b47-8404-d393f278a8a5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        672,
+        208
+      ],
+      "id": "b56e8c70-6ad6-4aa2-8bb8-904bfbf226b8",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sora-2-text-to-video\",\n  \"input\": {\n    \"prompt\":  \"{{ $json.output }}\",\n    \"aspect_ratio\": \"portrait\",\n    \"n_frames\": \"15\",\n    \"remove_watermark\": true\n  }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        992,
+        -64
+      ],
+      "id": "75787198-cf1b-4680-a16d-085c60dd28c5",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "nhO0AY0gX0G6EQxN",
+          "name": "Kie API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $('HTTP Request').item.json.data.taskId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1392,
+        -64
+      ],
+      "id": "221c1545-fccf-4ab9-8378-b46e5ca90719",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "nhO0AY0gX0G6EQxN",
+          "name": "Kie API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        -64
+      ],
+      "id": "93ecd979-c55b-49ce-b8d9-aa3d9250e3f4",
+      "name": "Wait",
+      "webhookId": "cd0456f2-eca4-43bf-b52c-a8368ea9db04"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "069d2bdf-afed-48dd-b6c1-422135b12f27",
+              "leftValue": "={{ $json.data.state }}",
+              "rightValue": "success",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1600,
+        -64
+      ],
+      "id": "7c646a5f-d41a-4283-9fd5-ebfd3360d966",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1728a377-6ea8-4275-a21f-1512c057230e",
+              "name": "data.resultJson",
+              "value": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1808,
+        -80
+      ],
+      "id": "0e0649f5-02bf-4d84-a136-f320029583d7",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json['destination emails'].join(', ') }}",
+        "subject": "=AppsFlyer video summary",
+        "message": "={{ $json.data.resultJson }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2032,
+        -80
+      ],
+      "id": "86c965c1-092b-4731-9b66-5a5811da4e36",
+      "name": "Send a message2",
+      "webhookId": "47329e3e-3538-4d5a-a19a-c61fb54d5764",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "kRP3pLkDdleQtIEv",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "b5dc9202-7c80-4211-8d32-ac7727decf14",
+  "meta": {
+    "templateId": "self-building-ai-agent",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5152d9ac095ac50ac164490ed5b6ca31f56c3526e6cebef2c21d86ffe00ae57a"
+  },
+  "id": "myMx7SdowQLWdtuW",
+  "tags": [
+    {
+      "updatedAt": "2025-11-03T12:43:45.715Z",
+      "createdAt": "2025-11-03T12:43:45.715Z",
+      "id": "OsxajeoVPmtboW5V",
+      "name": "APAC_25"
+    }
+  ]
+}
